@@ -114,6 +114,14 @@
     if (uv && data.uv != null) uv.textContent = num(data.uv);
   }
 
+  function markFallback() {
+    var card = document.querySelector('.gs-visit-card');
+    if (!card) return;
+    var label = card.querySelector('.gs-visit-label');
+    if (label) label.textContent = '本机访问';
+    card.title = '全站统计服务暂不可用，当前显示本机累计访问次数';
+  }
+
   function loadCounters() {
     var host = location.hostname;
     if (host === 'localhost' || host === '127.0.0.1' || host === '') return; // 本地预览不计数
@@ -136,7 +144,7 @@
             uv: r.busuanzi_page_uv != null ? r.busuanzi_page_uv : r.busuanzi_site_uv
           });
         })
-        .catch(function () { /* 统计服务不可用时保留本地数值 */ });
+        .catch(function () { markFallback(); });
     } catch (e) {
       /* fetch 不可用 */
     }
